@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'https://dummy.restapiexample.com/api/v1/update/21';
+const url = 'https://dummy.restapiexample.com/api/v1/create';
 
 export const getEmployees = ()=> {
     const data =  axios.get(url);
@@ -13,11 +13,11 @@ export const getEmployeeByID = (employeeID)=> {
 }
 
 export const addEmployeeToList = (employee)=>{
-    const postURL = "https://dummy.restapiexample.com/api/v1/update/21"
+    const postURL = "https://dummy.restapiexample.com/api/v1/create"
    const data= axios.post(postURL, employee)
     return data
 }
 export const updateEmployee = (employee, employeeID)=>{
-    const updateURL = "https://dummy.restapiexample.com/api/v1/update/21"
+    const updateURL = "https://dummy.restapiexample.com/api/v1/create"
     return axios.put(updateURL + '/' + employeeID, employee);
 }
