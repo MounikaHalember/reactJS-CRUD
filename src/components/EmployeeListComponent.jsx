@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import UpdateComponent from './UpdateComponent'
 import { getEmployees } from '../service/apiService';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,10 +7,14 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import './components.css'
 
+import setEmployeeDataArray from '../store/action';
+
 function EmployeeListComponent(props) {
     const [employees,setEmployees] = useState([]);
-    const {employeeDataArray,setDataArray}= props;
+    // const {employeeDataArray,setDataArray}= props;
+    const employeeDataArray= useSelector(state => state.employeeDataArray);
 
+  const dispatch=useDispatch();
     useEffect(() =>{
         localStorage.setItem("employeeDataArray",employeeDataArray)
         getEmployees().then(response => {
@@ -32,7 +37,8 @@ function EmployeeListComponent(props) {
    
     const deleteHandler =(id)=>{
     const newEmployeeArray= employeeDataArray.filter(employee=>employee.id !== id)
-    setDataArray(newEmployeeArray)
+   
+    dispatch(setEmployeeDataArray(newEmployeeArray))
     }
   
   return (
@@ -59,7 +65,7 @@ function EmployeeListComponent(props) {
             ))}
         </tbody>
     </Table>
-    <UpdateComponent employeeDataArray={employeeDataArray} setDataArray={setDataArray}/>
+    <UpdateComponent employeeDataArray={employeeDataArray} setDataArray={setEmployeeDataArray}/>
     </>
   )
 }
