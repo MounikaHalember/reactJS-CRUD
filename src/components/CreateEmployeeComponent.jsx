@@ -1,19 +1,22 @@
 import React,{useState,useEffect, useCallback} from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import EmployeeListComponent from './EmployeeListComponent';
 import { addEmployeeToList, getEmployees,updateEmployee} from '../service/apiService';
 import './components.css';
+// import employeeDataArray from '../store/reducer';
+import setEmployeeDataArray from '../store/action'
 
 
 function CreateEmployeeComponent() {
-
+ const dispatch = useDispatch();
   const [employeeData,setData] =useState({name:"",age:"",id:"",salary:99908});
-  const [employeeDataArray,setDataArray] =useState([]);
+  // const [employeeDataArray,setDataArray] =useState([]);
   // useEffect(()=>{
-  //   getEmployees().then((response)=>{
-      
-  //   })
+  //   console.log(employeeDataArray);
+
   // },[])
+  const employeeDataArray= useSelector(state => state.employeeDataArray);
   const onNameHandler = (e) => {
       const tempObj = {...employeeData,
         name:e.target.value
@@ -26,14 +29,14 @@ function CreateEmployeeComponent() {
     }
     setData(tempObj)
 }
-  const createEmployee = async() => {
+  const createEmployee = useCallback(async() => {
  const response = await addEmployeeToList(employeeData)  
   console.log(response);
   let tempArray = [...employeeDataArray]
     tempArray.push( response.data.data);
 
-    setDataArray(tempArray)
-  }
+    dispatch(setEmployeeDataArray(tempArray))
+  },[employeeData])
 
 
  
@@ -55,7 +58,7 @@ useEffect(() => {
      </div>
      <Button variant="primary" onClick = {createEmployee} className="addBtn">Add Employee</Button>
     </div>
-    <EmployeeListComponent employeeDataArray={employeeDataArray} setDataArray={setDataArray}/>
+    <EmployeeListComponent employeeDataArray={employeeDataArray} setDataArray={setEmployeeDataArray}/>
     </div>
   )
 }
